@@ -5,7 +5,7 @@ using Microsoft.Identity.Web.Resource;
 
 namespace BlazorApp88AAdTestApp.Server.Controllers
 {
-	[Authorize]
+	//[Authorize]
 	[ApiController]
 	[Route("[controller]")]
 	//[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
@@ -26,6 +26,7 @@ namespace BlazorApp88AAdTestApp.Server.Controllers
 		[HttpGet]
 		public IEnumerable<WeatherForecast> Get()
 		{
+			var user = HttpContext.Request;
 			return Enumerable.Range(1, 5).Select(index => new WeatherForecast
 			{
 				Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

@@ -4,6 +4,15 @@
 
 <PageTitle>Weather forecast</PageTitle>
 
+<AuthorizeView>
+  <Authorized>
+    @foreach(var claim in @context.User.Claims)
+    {
+      <li>@claim.Type = @claim.Value</li>
+    }
+  </Authorized>
+</AuthorizeView>
+
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
