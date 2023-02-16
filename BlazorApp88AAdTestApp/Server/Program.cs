@@ -38,6 +38,7 @@ namespace BlazorApp88AAdTestApp
       builder.Services
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+      builder.Services.AddAuthorization();
       builder.Services.AddControllersWithViews();
       builder.Services.AddRazorPages();
       builder.Services.AddSingleton<ContentSecurityPolicyMiddleware>();
@@ -66,6 +67,7 @@ namespace BlazorApp88AAdTestApp
       app.UseRouting();
       //app.UseCors("eggs");
       app.UseAuthorization();
+      app.UseAuthentication();
 
       app.MapRazorPages();
       app.MapControllers();
