@@ -1,4 +1,3 @@
-using BlazorApp88AAdTestApp.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -27,6 +26,7 @@ namespace BlazorApp88AAdTestApp.Client
 					builder.Configuration!.GetSection("ServerApi")["Scopes"]
 					?? throw new InvalidOperationException("ServerApi::Scopes is missing from appsettings.json");
 				options.ProviderOptions.DefaultAccessTokenScopes.Add(scopes);
+				options.ProviderOptions.LoginMode = "redirect";
 			});
 			await builder.Build().RunAsync();
 		}
