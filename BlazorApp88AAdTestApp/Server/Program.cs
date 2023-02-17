@@ -1,10 +1,9 @@
 using BlazorApp88AAdTestApp.Server;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace BlazorApp88AAdTestApp
 {
@@ -31,7 +30,7 @@ namespace BlazorApp88AAdTestApp
       //	.AddInMemoryTokenCaches();
       builder.Services
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
+        .AddJwtBearer(async options =>
         {
           var originalEvents = options.Events;
           options.Events = new JwtBearerEvents()
@@ -57,12 +56,18 @@ namespace BlazorApp88AAdTestApp
               return originalEvents?.OnTokenValidated(context) ?? Task.CompletedTask;
             }
           };
-          options.Authority = "https://sts.windows.net/47f62749-2a26-422a-b1ba-f6c1d8d66eb3/";
+          options.Authority = "https://sts.windows.net/47f62749-2a26-422a-b1ba-f6c1d8d66eb3";
           options.Audience = "api://8244fb6c-364c-4762-a078-70880972f7f0";
+
+          string metadataUrl = $"{options.Authority}/.well-known/openid-configuration";
+          var configManager = new ConfigurationManager<OpenIdConnectConfiguration>(metadataUrl, new OpenIdConnectConfigurationRetriever());
+					OpenIdConnectConfiguration config = await configManager.GetConfigurationAsync();
+					ICollection<SecurityKey> signingKeys = config.SigningKeys;
+
           options.TokenValidationParameters = new TokenValidationParameters
           {
-            ValidateIssuerSigningKey = false,
-            //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("EKM8Q~PdGBdkPFy_cTKrGh2PdHK~Yp9beLOrNcsw")),
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKeys = signingKeys,
             ValidateIssuer = true,
             ValidIssuer = "https://sts.windows.net/47f62749-2a26-422a-b1ba-f6c1d8d66eb3/",
             ValidateAudience = true,
