@@ -24,7 +24,7 @@ namespace BlazorApp88AAdTestApp.Server.Controllers
 		[HttpGet]
 		public IEnumerable<WeatherForecast> Get()
 		{
-			var user = HttpContext.Request;
+			var user = HttpContext.User;
 			return Enumerable.Range(1, 5).Select(index => new WeatherForecast
 			{
 				Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
