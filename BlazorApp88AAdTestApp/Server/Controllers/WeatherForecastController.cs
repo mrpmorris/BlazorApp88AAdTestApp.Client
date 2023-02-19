@@ -1,9 +1,10 @@
 using BlazorApp88AAdTestApp.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorApp88AAdTestApp.Server.Controllers
 {
-	//[Authorize]
+	[Authorize]
 	[ApiController]
 	[Route("[controller]")]
 	//[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
